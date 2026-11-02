@@ -1,5 +1,4 @@
 import os
-import sys
 from openai import OpenAI
 from dotenv import load_dotenv
 
@@ -18,16 +17,9 @@ def load_docs(file_path):
 
 # ================= 3. 核心 RAG 流程 =================
 def ask_rag(question, docs_text):
-    """
-    RAG 四步：
-    1. 分块：直接把整段资料塞进去。
-    2. 向量化与检索：把整段资料作为背景知识给 AI。
-    3. 拼提示词：把你的问题 + 资料拼在一起。
-    4. 生成：调用大模型。
-    """
     client = OpenAI(base_url=BASE_URL, api_key=os.getenv("DEEPSEEK_API_KEY"))
     
-    # 拼装提示词（核心技巧：强制要求附上出处，防幻觉）
+    # 这里修正了！必须强制 AI 附上出处！
     prompt = f"""你是一个专业的学科问答助手。请严格根据以下【参考资料】回答用户的问题。
 如果参考资料中没有提到，请直接回答“根据提供的资料，我无法回答这个问题”，绝对不要自己瞎编。
 在回答的最后，必须加上【来源：我的资料.txt】。
@@ -54,7 +46,7 @@ if __name__ == "__main__":
         docs = load_docs("我的资料.txt")
     except FileNotFoundError:
         print("【错误】找不到 '我的资料.txt'，请检查文件是否在同一个文件夹里！")
-        sys.exit()
+        exit()
 
     question = "HSK4级需要掌握多少个词汇？"
     
