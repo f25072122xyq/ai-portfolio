@@ -23,7 +23,7 @@ def list_by_level(level: str) -> str:
     out = [row["词汇"] for row in VOCAB_DATA if row["等级"] == str(level).strip()]
     return "、".join(out) if out else "该等级暂无词汇"
 
-# 🌟 新增的第3个工具
+# 🌟 这就是老师要求的第3个工具！
 @mcp.tool()
 def count_by_level(level: str) -> str:
     """返回某一 HSK 等级的词汇总数。"""
